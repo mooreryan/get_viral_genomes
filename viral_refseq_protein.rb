@@ -74,7 +74,7 @@ File.open(infile, "rt").each_line(sep=GB_SEP).with_index do |rec, idx|
   abort_if seq.empty?,
            "Missing seq for #{info[:protein_acc]}    #{rec}"
 
-  record = ">#{info[:protein_acc]}\t#{info[:genome_acc]}\t#{info[:division]}\t#{info[:definition]}"
+  record = ">#{info[:protein_acc]}\t#{info[:genome_acc]}\t#{info[:division]}\t#{info[:definition]}\n#{seq}"
 
   seq_outf.puts record
 

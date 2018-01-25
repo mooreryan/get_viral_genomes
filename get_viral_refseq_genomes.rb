@@ -1,11 +1,14 @@
 #!/usr/bin/env ruby
 Signal.trap("PIPE", "EXIT")
 
+# TODO kill whole script if something in a parallel loop dies.
+
 # Number of files that viral refseq is split into
 VIRAL_REFSEQ_SPLITS = 2
 
 # Scripts
 PARSE_VIRAL_REFSEQ_HOST = File.join(__dir__, "viral_refseq_host_and_type.rb")
+PARSE_VIRAL_REFSEQ_PROTEIN = File.join(__dir__, "viral_refseq_protein.rb")
 
 require "aai"
 require "abort_if"
@@ -95,7 +98,8 @@ Parallel.each(2.times, in_processes: 2) do |idx|
     Process.run_and_time_it! "Removing temp gbff files", "rm #{File.join(dir_viral_refseq, '*.gbff')}"
   else
     # Parse the gp file
-    cmd = "ruby #{File.join(__dir__, viral_refseq_protein.rb)} #{new_gpff_outf}"
+    #{VIRAL_REFSEQ_PROTEIN}
+    cmd = "ruby #{PARSE_VIRAL_REFSEQ_PROTEIN} #{new_gpff_outf}"
     Process.run_and_time_it! "Processing protein files", cmd
 
     # Remove the gp file.
